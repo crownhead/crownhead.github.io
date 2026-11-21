@@ -8,10 +8,26 @@
 <title>CROWNHEAD AFTER HOURS</title>
 <meta name="description" content="The last light is mine.">
 <link rel="stylesheet" href="night.css?v=crownhead">
-<link rel="stylesheet" href="afterhours.css?v=rain1">
+<link rel="stylesheet" href="afterhours.css?v=outdoor2">
 </head>
 <body><main class="shell">
-<div class="topline"><span>CROWNHEAD / AFTER HOURS</span><div class="row"><b>■ 夜班营业</b><button id="motion-toggle" type="button" aria-pressed="false" aria-label="暂停背景动效">暂停动效</button></div></div><header class="hero"><img class="scene" src="bar.svg" alt="" fetchpriority="high"><div class="weather" aria-hidden="true"><span class="reflection"></span></div><div class="intro"><div class="eyebrow">深夜吧台 / 一个约定的座位</div><h1 class="wordmark" lang="en"><span>CROWNHEAD</span> <span>AFTER HOURS</span></h1><p class="tagline" lang="en">The last light is mine.</p></div><div class="sign" aria-hidden="true">SEAT 01</div></header>
+<div class="topline"><span>CROWNHEAD / AFTER HOURS</span><div class="row"><b>■ 夜班营业</b><button id="motion-toggle" type="button" aria-pressed="false" aria-label="暂停背景动效">暂停动效</button></div></div><header class="hero">
+<svg class="scene scene-live" viewBox="0 0 480 128" preserveAspectRatio="xMidYMid slice" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="window-panes"><path d="M159 15h73v50h-73z M236 15h71v50h-71z M159 68h73v12h-73z M236 68h71v12h-71z"/></clipPath>
+    <clipPath id="drink-surface"><path d="M330 81h19v9h-2v4h-15v-4h-2z"/></clipPath>
+    <pattern id="rain-tile" width="48" height="48" patternUnits="userSpaceOnUse"><path fill="#a2e1d7" opacity=".68" d="M4 0h1v5H4zM3 5h1v3H3zM17 27h1v7h-1zM16 34h1v4h-1zM29 10h1v7h-1zM28 17h1v4h-1zM43 35h1v5h-1zM42 40h1v3h-1z"/></pattern>
+  </defs>
+  <image href="bar.svg?v=outdoor2" width="480" height="128"/>
+  <g clip-path="url(#window-panes)">
+    <g class="street-neon" fill="#ff9cce"><path opacity=".25" d="M260 37h14v9h-14z"/><path d="M262 39h10v1h-10zM262 41h2v3h-2zM266 41h6v1h-6zM270 43h2v1h-2z"/></g>
+    <g class="street-neon street-neon-alt" fill="#a2e1d7"><path opacity=".24" d="M187 41h14v13h-14z"/><path d="M189 43h3v8h-3zM194 44h5v1h-5zM194 47h4v1h-4zM194 50h5v1h-5z"/></g>
+    <rect class="pane-rain pane-rain-far" x="146" y="-42" width="215" height="126" fill="url(#rain-tile)"/>
+    <rect class="pane-rain" x="153" y="-46" width="210" height="130" fill="url(#rain-tile)"/>
+  </g>
+  <g clip-path="url(#drink-surface)" fill="#fff1d1"><path class="drink-ripple" d="M331 82h6v1h-6zM342 83h5v1h-5z"/><rect class="drink-bubble" x="335" y="92" width="1" height="1"/><rect class="drink-bubble drink-bubble-late" x="345" y="94" width="2" height="1"/><rect class="drink-bubble drink-bubble-last" x="340" y="91" width="1" height="1"/></g>
+</svg>
+<div class="intro"><div class="eyebrow">深夜吧台 / 一个约定的座位</div><h1 class="wordmark" lang="en"><span>CROWNHEAD</span> <span>AFTER HOURS</span></h1><p class="tagline" lang="en">The last light is mine.</p></div><div class="sign" aria-hidden="true">SEAT 01</div></header>
 <section class="panel prologue" aria-labelledby="prologue-title">
   <h2 class="panel-cap" id="prologue-title"><span lang="en">PROLOGUE</span><span>00 / PRIVATE LOG</span></h2>
   <div class="inside"><div class="prologue-copy" id="prologue-copy"></div><p class="privacy-note" id="prologue-empty">这里只显示当前浏览器里保存的序章。</p>

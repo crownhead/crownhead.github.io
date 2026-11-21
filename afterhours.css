@@ -1,12 +1,19 @@
-/* The existing window and bar are the stage; motion stays behind the copy. */
-.weather{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
-.weather::before,.weather::after{content:"";position:absolute;inset:-95px -30px;transform:skewX(-13deg);mask-image:linear-gradient(90deg,transparent 12%,#000 63%);background-repeat:repeat;animation:rain-fall 1.12s linear infinite}
-.weather::before{background-image:url('rain.svg');background-size:144px 96px;opacity:.65}
-.weather::after{background-image:url('rain.svg');background-size:192px 128px;opacity:.34;animation-duration:1.95s;animation-name:rain-distant;animation-delay:-.6s}
-@keyframes rain-fall{from{translate:0 0}to{translate:0 96px}}@keyframes rain-distant{from{translate:0 -128px}to{translate:0 0}}
-.hero .intro,.hero .sign{z-index:1}.hero .sign{color:var(--accent);border-color:var(--accent);box-shadow:0 0 12px #ff9cce65,inset 0 0 8px #ff9cce33;animation:neon-hum 5s ease-in-out infinite}.wordmark span+span{text-shadow:0 0 14px #ff9cce8b;animation:neon-hum 5s ease-in-out infinite}.weather .reflection{position:absolute;inset:73% 0 0 38%;background:radial-gradient(ellipse at 67% 15%,#ff9cce52,transparent 63%);mix-blend-mode:screen;animation:counter-light 5s ease-in-out infinite}
-@keyframes neon-hum{0%,100%{opacity:.84}50%{opacity:1}}@keyframes counter-light{0%,100%{opacity:.28}50%{opacity:.76}}
+/* Window mullions and glass edges remain dry: SVG clips stay fixed while the elements move. */
+.scene-live{pointer-events:none}
+.pane-rain{opacity:.8;animation:pane-fall 1.16s linear infinite}
+.pane-rain-far{opacity:.4;animation-duration:2.05s;animation-delay:-.71s}
+@keyframes pane-fall{from{transform:translate(0,0)}to{transform:translate(-48px,48px)}}
+.street-neon{opacity:.83;animation:street-sign 5.8s steps(1,end) infinite}
+.street-neon-alt{animation-duration:7.2s;animation-delay:-2.8s}
+@keyframes street-sign{0%,49%,72%{opacity:.88}40%,67%{opacity:.30}44%{opacity:.14}56%{opacity:.61}}
+.drink-bubble{opacity:0;animation:drink-rise 3.3s ease-out infinite}
+.drink-bubble-late{animation-delay:-1.1s;animation-duration:3.8s}.drink-bubble-last{animation-delay:-2.2s;animation-duration:4.4s}
+@keyframes drink-rise{0%,30%{opacity:0;transform:translateY(0)}42%{opacity:.76}75%,100%{opacity:0;transform:translateY(-12px)}}
+.drink-ripple{opacity:.52;animation:drink-glint 4.1s ease-in-out infinite}
+@keyframes drink-glint{0%,100%{opacity:.36;transform:translateX(-1px)}50%{opacity:.80;transform:translateX(2px)}}
+.hero .intro,.hero .sign{z-index:1}.hero .sign{color:var(--accent);border-color:var(--accent);box-shadow:0 0 12px #ff9cce65,inset 0 0 8px #ff9cce33}.wordmark span+span{text-shadow:0 0 14px #ff9cce8b}
 #motion-toggle{font:inherit;letter-spacing:0;padding:3px 8px;color:var(--mint)}html[data-motion=off] .hero *,html[data-motion=off] .hero *::before,html[data-motion=off] .hero *::after{animation-play-state:paused!important}
 .prologue{margin-bottom:14px}.prologue .inside{padding:clamp(16px,3vw,28px)}.prologue h2{margin:0}.prologue-copy{max-width:68ch;font-size:.98rem;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}.prologue-copy:empty{display:none}.prologue .privacy-note{font-size:.85rem;color:var(--muted)}.prologue details{margin-top:.65rem}.prologue summary{cursor:pointer;color:var(--mint);width:fit-content}.prologue textarea{display:block;width:100%;min-height:9rem;margin:10px 0;padding:10px;border:1px solid var(--line);background:var(--bg);resize:vertical}.prologue [role=status]{font-size:.8rem;color:var(--mint)}
-@media(max-width:480px){.weather::before,.weather::after{mask-image:linear-gradient(90deg,transparent,#000 76%)}}
-@media(prefers-reduced-motion:reduce){.weather::before,.weather::after,.weather .reflection,.hero .sign,.wordmark span+span{animation:none!important}}
+@media(max-width:680px){.scene-live{inset:0 auto 0 50%;width:auto;height:100%;aspect-ratio:480/128;transform:translateX(-54%)}}
+@media(max-width:360px){.scene-live{transform:translateX(-58%)}}
+@media(prefers-reduced-motion:reduce){.pane-rain,.street-neon,.drink-bubble,.drink-ripple{animation:none!important}}
