@@ -8,9 +8,15 @@
 <title>CROWNHEAD AFTER HOURS</title>
 <meta name="description" content="The last light is mine.">
 <link rel="stylesheet" href="night.css?v=crownhead">
+<link rel="stylesheet" href="afterhours.css?v=rain1">
 </head>
 <body><main class="shell">
-<div class="topline"><span>CROWNHEAD / AFTER HOURS</span><b>■ 夜班营业</b></div><header class="hero"><img class="scene" src="bar.svg" alt="" fetchpriority="high"><div class="intro"><div class="eyebrow">深夜吧台 / 一个约定的座位</div><h1 class="wordmark" lang="en"><span>CROWNHEAD</span> <span>AFTER HOURS</span></h1><p class="tagline" lang="en">The last light is mine.</p></div><div class="sign" aria-hidden="true">SEAT 01</div></header>
+<div class="topline"><span>CROWNHEAD / AFTER HOURS</span><div class="row"><b>■ 夜班营业</b><button id="motion-toggle" type="button" aria-pressed="false" aria-label="暂停背景动效">暂停动效</button></div></div><header class="hero"><img class="scene" src="bar.svg" alt="" fetchpriority="high"><div class="weather" aria-hidden="true"><span class="reflection"></span></div><div class="intro"><div class="eyebrow">深夜吧台 / 一个约定的座位</div><h1 class="wordmark" lang="en"><span>CROWNHEAD</span> <span>AFTER HOURS</span></h1><p class="tagline" lang="en">The last light is mine.</p></div><div class="sign" aria-hidden="true">SEAT 01</div></header>
+<section class="panel prologue" aria-labelledby="prologue-title">
+  <h2 class="panel-cap" id="prologue-title"><span lang="en">PROLOGUE</span><span>00 / PRIVATE LOG</span></h2>
+  <div class="inside"><div class="prologue-copy" id="prologue-copy"></div><p class="privacy-note" id="prologue-empty">这里只显示当前浏览器里保存的序章。</p>
+  <details><summary>编辑或导入序章</summary><label class="privacy-note" for="prologue-input">私用序章 · 不会上传，也未加密</label><textarea id="prologue-input" maxlength="12000" spellcheck="false"></textarea><div class="row"><button id="prologue-save" type="button">保存到此浏览器</button><button id="prologue-import" type="button">导入 TXT</button><button id="prologue-export" type="button">下载序章</button></div><input id="prologue-file" type="file" accept=".txt,text/plain" hidden><p id="prologue-status" role="status"></p></details></div>
+</section>
 <div class="grid">
 <aside class="panel" aria-labelledby="archive-cap"><h2 class="panel-cap" id="archive-cap">手记柜 <span>01 / LOG</span></h2><div class="inside"><button id="new" class="primary">＋ 写一篇</button><input id="search" class="search" type="search" placeholder="搜标题或正文" aria-label="搜标题或正文"><div class="row tabs" role="group" aria-label="手记分类"><button data-filter="all" aria-pressed="true">全部</button><button data-filter="draft" aria-pressed="false">随手写</button><button data-filter="kept" aria-pressed="false">慢慢整理</button></div><p id="none" class="muted" hidden></p><ul id="list" class="list"></ul></div></aside>
 <section class="panel writing" aria-labelledby="counter-cap"><h2 class="panel-cap" id="counter-cap">吧台 <span>02 / COUNTER</span></h2><div class="inside"><div id="editor"><div class="row top"><small id="kind">随手写</small><small id="count">0 字符</small></div><input class="title" id="title" aria-label="标题" placeholder="标题可以晚点取" maxlength="180" autocomplete="off"><textarea class="body" id="body" aria-label="正文" placeholder="从这一刻想写的那一句开始。"></textarea><div class="row foot"><button id="move">移到慢慢整理</button><div class="row"><button id="markdown">下载此篇</button><button id="remove">移到废纸篓</button></div></div></div><div id="blank" class="empty" hidden><i class="pixel" aria-hidden="true"></i><strong>今晚的座位还空着。</strong><p>想写的时候，再点「写一篇」。</p></div><p id="status" role="status"></p></div></section>
@@ -51,5 +57,18 @@ $('markdown').onclick=()=>{const n=current();if(n)download('# '+name(n)+'\n\n'+n
 $('export').onclick=()=>download(JSON.stringify({version:1,notes},null,2),'application/json;charset=utf-8','留白-备份-'+new Date().toISOString().slice(0,10)+'.json');
 $('import').onclick=()=>$('file').click();
 $('file').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{const data=JSON.parse(await file.text());if(!valid(data))throw Error('invalid');const ids=new Set(notes.map(n=>n.id));const additions=data.notes.filter(n=>!ids.has(n.id));const duplicates=data.notes.length-additions.length;if(!additions.length){status('没有新增手记；已有手记保持不变。');return;}notes.push(...additions);save();if(!storageIssue&&$('status').textContent==='已保存在当前浏览器')status('已导入 '+additions.length+' 篇'+(duplicates?'；跳过已有 '+duplicates+' 篇':'')+'。');view('all');}catch{status('未导入：这个文件不是有效的留白备份。');}};
+const prologueKey='crownhead.prologue.v1', motionKey='crownhead.motion.off';
+function paintPrologue(value){$('prologue-copy').textContent=value;$('prologue-empty').hidden=!!value;$('prologue-input').value=value;}
+try{paintPrologue(localStorage.getItem(prologueKey)||'');}catch{$('prologue-status').textContent='无法读取本机序章。';}
+function savePrologue(value){value=value.trim();try{localStorage.setItem(prologueKey,value);paintPrologue(value);$('prologue-status').textContent='序章已保存到当前浏览器。';}catch{$('prologue-status').textContent='未能保存，请先下载序章备份。';}}
+$('prologue-save').onclick=()=>savePrologue($('prologue-input').value);
+$('prologue-import').onclick=()=>$('prologue-file').click();
+$('prologue-file').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{if(file.size>50000)throw Error();const text=(await file.text()).trim();if(!text||text.length>12000)throw Error();$('prologue-input').value=text;$('prologue-status').textContent='已读入编辑框，点「保存到此浏览器」后生效。';}catch{$('prologue-status').textContent='没有读入，请选择非空、少于 12000 字符的 TXT。';}};
+$('prologue-export').onclick=()=>{const text=$('prologue-input').value;if(text.trim())download(text,'text/plain;charset=utf-8','CROWNHEAD-Prologue.txt');};
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');let paused=false;
+try{paused=localStorage.getItem(motionKey)==='1';}catch{}
+function paintMotion(){const off=reduced.matches||paused;document.documentElement.dataset.motion=off?'off':'on';const b=$('motion-toggle');b.disabled=reduced.matches;b.textContent=reduced.matches?'系统已减少动效':off?'开启动效':'暂停动效';b.setAttribute('aria-label',b.textContent);b.setAttribute('aria-pressed',String(off));}
+$('motion-toggle').onclick=()=>{paused=!paused;paintMotion();try{localStorage.setItem(motionKey,paused?'1':'0');}catch{}};
+reduced.addEventListener('change',paintMotion);paintMotion();
 view('all');status('手记不会上传，只留在当前浏览器。');
 </script></body></html>
